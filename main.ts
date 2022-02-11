@@ -1,32 +1,27 @@
 function workingtitle () {
-    colorOne = color_list.removeAt(randint(0, color_list.length - 1))
-    showColor = sprites.create(colorOne, SpriteKind.Player)
-    showColor.setPosition(40, 60)
-    colorTwo = color_list.removeAt(randint(0, color_list.length - 1))
-    showColor = sprites.create(colorTwo, SpriteKind.Player)
-    showColor.setPosition(80, 60)
-    colorThree = color_list.removeAt(randint(0, color_list.length - 1))
-    showColor = sprites.create(colorThree, SpriteKind.Player)
-    showColor.setPosition(120, 60)
+	
 }
-// uses a condition to check the parameter. depending on the value of num, sets the showColor variable to a randomized color as well as removing it so there are no duplicate colors in one palette.
+// Uses a condition to check the parameter. Depending on the value of "num," calls the "showPalette" function and otherwise resets the game.
 function colorAmount (num: number) {
     if (num == 3) {
-        workingtitle()
+        showPalette()
     } else if (num == 6) {
         // note to add to code next time: i want it to be so that the user presses A and then it goes to the next half of the palette
         for (let index = 0; index <= 1; index++) {
-            workingtitle()
+            showPalette()
             pause(2000)
         }
     } else if (num == 9) {
-    	
+        for (let index = 0; index <= 2; index++) {
+            showPalette()
+            pause(2000)
+        }
     } else {
         game.showLongText("Please choose either 3, 6, or 9.", DialogLayout.Center)
         game.reset()
     }
 }
-// displays the initial text explanation and sets an array 
+// Displays the initial text explanation and sets an array, "color list." Also asks the user to input a number and then calls the function "colorAmount" to check that inputted number.
 function initializeColorPaletteGenerator () {
     game.setDialogFrame(img`
         ..bbbbbbbbbbbbbbbbbbbb..
@@ -56,6 +51,7 @@ function initializeColorPaletteGenerator () {
         `)
     game.setDialogTextColor(15)
     game.showLongText("Welcome to the Color Palette Generator! Choose between 3, 6, and 9 colors to be in your palette.", DialogLayout.Center)
+    game.showLongText("If you choose 6 or 9 colors, you will be shown your palette in sets of 3.", DialogLayout.Center)
     color_list = [
     img`
         2222222222222222222222222222222222222222
@@ -1644,12 +1640,25 @@ function initializeColorPaletteGenerator () {
         eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
         `
     ]
+    chooseNumber = game.askForNumber("", 1)
+    colorAmount(chooseNumber)
+}
+// Sets the variables "colorOne," "colorTwo," and "colorThree" to be random colors from the array "color list." It also sets the "showColor" variable to be one of the numbered color images, and sets their position on the screen. This function also ensures that none of the colors can be repeated.
+function showPalette () {
+    colorOne = color_list.removeAt(randint(0, color_list.length - 1))
+    showColor = sprites.create(colorOne, SpriteKind.Player)
+    showColor.setPosition(40, 60)
+    colorTwo = color_list.removeAt(randint(0, color_list.length - 1))
+    showColor = sprites.create(colorTwo, SpriteKind.Player)
+    showColor.setPosition(80, 60)
+    colorThree = color_list.removeAt(randint(0, color_list.length - 1))
+    showColor = sprites.create(colorThree, SpriteKind.Player)
+    showColor.setPosition(120, 60)
 }
 let colorThree: Image = null
 let colorTwo: Image = null
 let showColor: Sprite = null
-let color_list: Image[] = []
 let colorOne: Image = null
+let chooseNumber = 0
+let color_list: Image[] = []
 initializeColorPaletteGenerator()
-let chooseNumber = game.askForNumber("", 1)
-colorAmount(chooseNumber)
